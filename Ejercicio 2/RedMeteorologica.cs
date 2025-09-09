@@ -16,11 +16,80 @@ namespace RedMeteorologica
         /// Agrega una estación a la red si no es nula ni duplicada.
         /// </summary>
         /// <param name="e">La estación a agregar.</param>
-        public void AgregarEstacion(Estacion e)
+        public void AgregarEstacion()
         {
-            if (e == null) return;
-            if (!estaciones.Contains(e))
-                estaciones.Add(e);
+            String texto = "\nAgregar Estación\nSeleccione el tipo de estación:\n1. Estación Urbana\n2. Estación Rural\nOpción: ";
+            Console.WriteLine(texto);
+            //Validar que el input sea un número y que sea una opcion valida
+            if (!int.TryParse(Console.ReadLine(), out int tipo))
+            {
+                Console.WriteLine("Error: Debe ingresar un número.");
+                return;
+            }
+            if (tipo != 1 && tipo != 2)
+            {
+                Console.WriteLine("Tipo de estación no valido");
+                return;
+            }
+
+
+            String codigo, ubicacion;
+            bool valido = false;
+            //Validacion do-while para que el codigo no esté vacio ni sea duplicado
+            do
+            {
+                Console.Write("Código de la estación: ");
+                codigo = Console.ReadLine();
+                if (string.IsNullOrEmpty(codigo))
+                {
+                    Console.WriteLine("El código no puede estar vacío.");
+                }
+                else if (estaciones.Any(e => e.Codigo == codigo))
+                {
+                    Console.WriteLine("Ya existe una estación con ese código.");
+                }
+                else
+                {
+                    valido = true;
+                }
+            }
+            while (!valido);
+            //Validacion do-while para que la ubicacion no esté vacia
+            do
+            {
+                valido = false;
+                Console.Write("Ubicación: ");
+                ubicacion = Console.ReadLine();
+                if (string.IsNullOrEmpty(ubicacion))
+                {
+                    Console.WriteLine("La ubicación no puede estar vacía.");
+                }
+                else
+                {
+                    valido = true;
+                }
+            }
+            while (!valido);
+            //creamos la nueva estacion
+            Estacion nuevaEstacion = null;
+            //Se registra la nueva estacion como urbana o rural
+            switch (tipo)
+            {
+                case 1:
+                    nuevaEstacion = new EstacionUrbana();
+                    nuevaEstacion.Codigo = codigo;
+                    nuevaEstacion.Ubicacion = ubicacion;
+                    break;
+                case 2:
+                    nuevaEstacion = new EstacionRural();
+                    nuevaEstacion.Codigo = codigo;
+                    nuevaEstacion.Ubicacion = ubicacion;
+                    break;
+            }
+            //valida que no este vacia y se agrega a la lista de estaciones
+            if (nuevaEstacion == null) return;
+            estaciones.Add(nuevaEstacion);
+
         }
 
         /// <summary>

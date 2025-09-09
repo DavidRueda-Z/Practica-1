@@ -28,6 +28,20 @@ namespace RedMeteorologica
         /// </summary>
         public IReadOnlyList<Estacion> ObtenerEstaciones()
         {
+            if (estaciones.Count == 0)
+            {
+                Console.WriteLine("No hay estaciones registradas.");
+            }
+
+            Console.WriteLine("\nLista de Estaciones");
+
+            int cont = 0;
+            foreach (var estacion in estaciones)
+            {
+                cont++;
+                Console.WriteLine("Estacion #" + cont + "\nCodigo: " + estacion.Codigo + "\nUbicacion: " + estacion.Ubicacion + "\n");
+            }
+
             return estaciones.AsReadOnly();
         }
 

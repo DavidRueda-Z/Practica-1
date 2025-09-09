@@ -4,6 +4,7 @@ using RedMeteorologica;
 
 class Program
 {
+    static RedMeteorologica.RedMeteorologica RedMet = new RedMeteorologica.RedMeteorologica();
     static void Main(string[] args)
     {
         MostrarMenuPrincipal();
@@ -94,6 +95,7 @@ class Program
             {
                 case 1:
                     // TODO: Agregar estación
+                    RedMet.AgregarEstacion();
                     break;
                 case 2:
                     // TODO: Registrar lectura
@@ -106,6 +108,7 @@ class Program
                     break;
                 case 5:
                     // TODO: Listar estaciones
+                    RedMet.ObtenerEstaciones();
                     break;
                 case 6:
                     volver = true;

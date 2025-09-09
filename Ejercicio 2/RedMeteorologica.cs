@@ -90,7 +90,7 @@ namespace RedMeteorologica
             if (nuevaEstacion == null) return;
             estaciones.Add(nuevaEstacion);
 
-        }
+        } 
 
         /// <summary>
         /// Devuelve una copia de la lista de estaciones.

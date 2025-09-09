@@ -4,7 +4,7 @@ using RedMeteorologica;
 
 class Program
 {
-    static RedMeteorologica.RedMeteorologica RedMet = new RedMeteorologica.RedMeteorologica();
+    static RedMeteorologica.RedMeteorologica RedMet = new RedMeteorologica.RedMeteorologica(); 
     static void Main(string[] args)
     {
         MostrarMenuPrincipal();

@@ -1,6 +1,7 @@
 # Práctica 1 - Programación de Software 
 
 ## 📂 Estructura del Proyecto
+```text
 ejercicio_1/
 │
 ├── EspacioParqueo.cs   # Clase abstracta base
@@ -11,6 +12,7 @@ ejercicio_1/
 ├── Parqueadero.cs      # Administra espacios y tickets
 ├── TipoEspacio.cs      # Enumeración con tipos de espacios
 └── Program.cs          # Menú principal (consola)
+
 
 
 

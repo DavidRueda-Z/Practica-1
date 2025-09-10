@@ -1,6 +1,6 @@
 # Práctica 1 - Programación de Software 
 
-## 📂 Estructura del Proyecto
+## Estructura del Proyecto
 ```text
 ejercicio_1/
 │
@@ -17,7 +17,7 @@ ejercicio_1/
 
 
 
-## 🎯 Funcionalidades del Menú
+## Funcionalidades del Menú
 1. Registrar entrada de vehículo.  
 2. Registrar salida y cobro.  
 3. Consultar disponibilidad por tipo de espacio.  

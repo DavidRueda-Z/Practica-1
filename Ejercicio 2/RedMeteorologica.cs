@@ -114,22 +114,40 @@ namespace RedMeteorologica
             return estaciones.AsReadOnly();
         }
 
-        /// <summary>
-        /// Calcula y muestra un resumen global de las estaciones.
-        /// </summary>
+     
         public void ResumenGlobal()
         {
             if (estaciones.Count == 0)
             {
-                System.Console.WriteLine("No hay estaciones registradas.");
+                Console.WriteLine(" No hay estaciones registradas.");
                 return;
             }
 
-            // Ejemplo: calcular promedio de temperatura si Estacion tiene una propiedad Temperatura
-            // double promedio = estaciones.Average(e => e.Temperatura);
-            // System.Console.WriteLine($"Temperatura promedio: {promedio}");
+            // Filtrar estaciones que tengan lecturas
+            var estacionesConLectura = estaciones.Where(e => e.UltimaLectura.Fecha != default).ToList();
 
-            System.Console.WriteLine($"Total de estaciones: {estaciones.Count}");
+            if (estacionesConLectura.Count == 0)
+            {
+                Console.WriteLine("No hay lecturas registradas en ninguna estación.");
+                return;
+            }
+
+            // Calcular promedios globales
+            double tempPromedio = estacionesConLectura.Average(e => e.UltimaLectura.Temperatura);
+            double humedadProm = estacionesConLectura.Average(e => e.UltimaLectura.Humedad);
+            double vientoProm = estacionesConLectura.Average(e => e.UltimaLectura.VelViento);
+            double lluviaProm = estacionesConLectura.Average(e => e.UltimaLectura.Lluvia);
+            double presionProm = estacionesConLectura.Average(e => e.UltimaLectura.Presion);
+
+            Console.WriteLine("\n===== RESUMEN GLOBAL =====");
+            Console.WriteLine($"Total de estaciones registradas: {estaciones.Count}");
+            Console.WriteLine($"Estaciones con lecturas: {estacionesConLectura.Count}");
+            Console.WriteLine($"Temp. promedio: {tempPromedio:F1} °C");
+            Console.WriteLine($"Humedad promedio: {humedadProm:F1} %");
+            Console.WriteLine($"Viento promedio: {vientoProm:F1} m/s");
+            Console.WriteLine($"Lluvia promedio: {lluviaProm:F1} mm");
+            Console.WriteLine($"Presión promedio: {presionProm:F1} hPa");
         }
+
     }
 }

@@ -12,7 +12,7 @@ ejercicio_1/
 ├── Parqueadero.cs      # Administra espacios y tickets
 ├── TipoEspacio.cs      # Enumeración con tipos de espacios
 └── Program.cs          # Menú principal (consola)
-
+```
 
 
 

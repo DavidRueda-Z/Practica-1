@@ -4,7 +4,7 @@ using RedMeteorologica;
 
 class Program
 {
-    static RedMeteorologica.RedMeteorologica RedMet = new RedMeteorologica.RedMeteorologica(); 
+    static RedMeteorologica.RedMeteorologica red = new RedMeteorologica.RedMeteorologica();
     static void Main(string[] args)
     {
         MostrarMenuPrincipal();
@@ -94,21 +94,93 @@ class Program
             switch (opcion)
             {
                 case 1:
-                    // TODO: Agregar estación
-                    RedMet.AgregarEstacion();
+                    Console.Write("Ingrese el código de la estación: ");
+                    string cod = Console.ReadLine();
+                    Console.Write("Ingrese la ubicación: ");
+                    string ubicacion = Console.ReadLine();
+                    Console.Write("Tipo (1=Urbana, 2=Rural): ");
+                    int tipo = int.Parse(Console.ReadLine());
+
+                    Estacion nuevaEstacion;
+                    if (tipo == 1)
+                        nuevaEstacion = new EstacionUrbana { Codigo = cod, Ubicacion = ubicacion, Activo = true };
+                    else
+                        nuevaEstacion = new EstacionRural { Codigo = cod, Ubicacion = ubicacion, Activo = true };
+
+                    red.AgregarEstacion(nuevaEstacion);
+                    Console.WriteLine("✅ Estación agregada correctamente.");
                     break;
                 case 2:
-                    // TODO: Registrar lectura
+                    Console.Write("Ingrese el código de la estación: ");
+                    string codigo = Console.ReadLine();
+
+                    // Buscar estación en la red
+                    var estacion = red.ObtenerEstaciones()
+                                      .FirstOrDefault(e => e.Codigo == codigo);
+
+                    if (estacion == null)
+                    {
+                        Console.WriteLine("Estación no encontrada.");
+                        break;
+                    }
+
+                    // Pedir datos de la lectura
+                    Lectura nueva = new Lectura();
+
+                    Console.Write("Temperatura (°C): ");
+                    nueva.Temperatura = double.Parse(Console.ReadLine());
+
+                    Console.Write("Humedad (%): ");
+                    nueva.Humedad = double.Parse(Console.ReadLine());
+
+                    Console.Write("Velocidad del viento (m/s): ");
+                    nueva.VelViento = double.Parse(Console.ReadLine());
+
+                    Console.Write("Lluvia (mm): ");
+                    nueva.Lluvia = double.Parse(Console.ReadLine());
+
+                    Console.Write("Presión (hPa): ");
+                    nueva.Presion = double.Parse(Console.ReadLine());
+
+                    nueva.Fecha = DateTime.Now;
+
+                    // Registrar lectura
+                    estacion.RegistrarLectura(nueva);
+                    Console.WriteLine("Lectura registrada correctamente.");
+
                     break;
                 case 3:
-                    // TODO: Ver resumen por estación
+                    Console.Write("Ingrese el código de la estación: ");
+                    string codResumen = Console.ReadLine();
+
+                    var estacionResumen = red.ObtenerEstaciones()
+                                             .FirstOrDefault(e => e.Codigo == codResumen);
+
+                    if (estacionResumen == null)
+                    {
+                        Console.WriteLine("Estación no encontrada.");
+                        break;
+                    }
+
+                    estacionResumen.CalcularResumen();
+                    break;
                     break;
                 case 4:
-                    // TODO: Resumen global
+                    red.ResumenGlobal();
                     break;
                 case 5:
-                    // TODO: Listar estaciones
-                    RedMet.ObtenerEstaciones();
+                    var estaciones = red.ObtenerEstaciones();
+                    if (estaciones.Count == 0)
+                    {
+                        Console.WriteLine("No hay estaciones registradas.");
+                    }
+                    else
+                    {
+                        foreach (var est in estaciones)
+                        {
+                            est.MostrarInformacion();
+                        }
+                    }
                     break;
                 case 6:
                     volver = true;
@@ -133,3 +205,4 @@ class Program
         return opcion;
     }
 }
+

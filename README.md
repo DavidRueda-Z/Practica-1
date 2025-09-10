@@ -14,6 +14,7 @@ ejercicio_1/
 
 
 
+
 ## 🎯 Funcionalidades del Menú
 1. Registrar entrada de vehículo.  
 2. Registrar salida y cobro.  

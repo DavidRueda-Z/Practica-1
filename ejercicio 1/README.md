@@ -1,6 +1,5 @@
 # Práctica 1 - Programación de Software 
 
-# ejercicio 1 
 ## Estructura del Proyecto
 ```text
 ejercicio_1/
@@ -15,21 +14,12 @@ ejercicio_1/
 └── Program.cs          # Menú principal (consola)
 ```
 
+
+
+
 ## Funcionalidades del Menú
 1. Registrar entrada de vehículo.  
 2. Registrar salida y cobro.  
 3. Consultar disponibilidad por tipo de espacio.  
 4. Mostrar información de todos los espacios.  
 5. Mostrar ingresos totales del día.  
-
-# ejercicio 2
-
-## Estructura del Proyecto
-```text
-ejercicio_2/
-......
-```
-## Funcionalidades del Menú
-.....
-
-

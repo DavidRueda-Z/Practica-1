@@ -1,16 +1,17 @@
-# Práctica 1 - Programación de Software 1
+# Práctica 1 - Programación de Software 
 
 ## 📂 Estructura del Proyecto
 ejercicio_1/
 │
-├── EspacioParqueo.cs # Clase abstracta base
-├── EspacioCarro.cs # Clase concreta que hereda de EspacioParqueo
-├── IPagable.cs # Interface para pagos
-├── IAuditable.cs # Interface para auditoría
-├── Ticket.cs # Clase que representa tickets de entrada/salida
-├── Parqueadero.cs # Administra espacios y tickets
-├── TipoEspacio.cs # Enumeración con tipos de espacios
-└── Program.cs # Menú principal (consola)
+├── EspacioParqueo.cs   # Clase abstracta base
+├── EspacioCarro.cs     # Clase concreta que hereda de EspacioParqueo
+├── IPagable.cs         # Interface para pagos
+├── IAuditable.cs       # Interface para auditoría
+├── Ticket.cs           # Clase que representa tickets de entrada/salida
+├── Parqueadero.cs      # Administra espacios y tickets
+├── TipoEspacio.cs      # Enumeración con tipos de espacios
+└── Program.cs          # Menú principal (consola)
+
 
 
 ## 🎯 Funcionalidades del Menú

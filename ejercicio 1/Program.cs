@@ -15,13 +15,13 @@ namespace ejercicio_1
             {
                 Console.Clear();
                 Console.WriteLine("==== SISTEMA DE PARQUEADEROS ====");
-                Console.WriteLine("1. Registrar entrada de vehÌculo");
+                Console.WriteLine("1. Registrar entrada de veh√≠culo");
                 Console.WriteLine("2. Registrar salida y cobro");
                 Console.WriteLine("3. Consultar disponibilidad por tipo");
-                Console.WriteLine("4. Mostrar informaciÛn de todos los espacios");
-                Console.WriteLine("5. Mostrar ingresos totales del dÌa");
+                Console.WriteLine("4. Mostrar informaci√≥n de todos los espacios");
+                Console.WriteLine("5. Mostrar ingresos totales del d√≠a");
                 Console.WriteLine("6. Salir");
-                Console.Write("\nSeleccione una opciÛn: ");
+                Console.Write("\nSeleccione una opci√≥n: ");
 
                 string opcion = Console.ReadLine();
 
@@ -46,7 +46,7 @@ namespace ejercicio_1
                         salir = true;
                         break;
                     default:
-                        Console.WriteLine("OpciÛn no v·lida, intente de nuevo.");
+                        Console.WriteLine("Opci√≥n no v√°lida, intente de nuevo.");
                         Console.ReadKey();
                         break;
                 }
@@ -65,7 +65,7 @@ namespace ejercicio_1
             Console.WriteLine("1. Carro");
             Console.WriteLine("2. Moto");
             Console.WriteLine("3. Discapacitado");
-            Console.WriteLine("4. ElÈctrico");
+            Console.WriteLine("4. El√©ctrico");
             string opcionTipo = Console.ReadLine();
 
             TipoEspacio tipo = opcionTipo switch
@@ -82,8 +82,8 @@ namespace ejercicio_1
             if (disponible != null)
             {
                 disponible.Ocupar(placa, DateTime.Now);
-                parqueadero.Auditar("Entrada", $"VehÌculo {placa} entrÛ a espacio {disponible.Id}");
-                Console.WriteLine($"VehÌculo {placa} registrado en espacio {disponible.Id}");
+                parqueadero.Auditar("Entrada", $"Veh√≠culo {placa} entr√≥ a espacio {disponible.Id}");
+                Console.WriteLine($"Veh√≠culo {placa} registrado en espacio {disponible.Id}");
             }
             else
             {
@@ -109,17 +109,17 @@ namespace ejercicio_1
                 Ticket ticket = espacio.Liberar(horaSalida);
                 parqueadero.Tickets.Add(ticket);
 
-                Console.WriteLine($"DuraciÛn: {ticket.HoraSalida - ticket.HoraEntrada}");
+                Console.WriteLine($"Duraci√≥n: {ticket.HoraSalida - ticket.HoraEntrada}");
                 Console.WriteLine($"Valor a pagar: {ticket.ValorCobrado:C}");
 
                 Console.Write("Ingrese medio de pago: ");
                 string medio = Console.ReadLine();
                 parqueadero.ProcesarPago(ticket.ValorCobrado, medio);
-                parqueadero.Auditar("Salida", $"VehÌculo {placa} saliÛ del espacio {espacio.Id}");
+                parqueadero.Auditar("Salida", $"Veh√≠culo {placa} sali√≥ del espacio {espacio.Id}");
             }
             else
             {
-                Console.WriteLine("No se encontrÛ vehÌculo con esa placa.");
+                Console.WriteLine("No se encontr√≥ veh√≠culo con esa placa.");
             }
 
             Console.ReadKey();
@@ -142,7 +142,7 @@ namespace ejercicio_1
         static void MostrarInformacionEspacios()
         {
             Console.Clear();
-            Console.WriteLine("=== InformaciÛn de Espacios ===");
+            Console.WriteLine("=== Informaci√≥n de Espacios ===");
 
             foreach (var espacio in parqueadero.Espacios)
             {

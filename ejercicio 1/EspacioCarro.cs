@@ -1,4 +1,4 @@
-﻿using System;
+ï»¿using System;
 
 namespace ejercicio_1
 {
@@ -14,7 +14,6 @@ namespace ejercicio_1
             EstaOcupado = false;
         }
 
-
         public override void Ocupar(string placaVehiculo, DateTime horaEntrada)
         {
             if (EstaOcupado)
@@ -22,7 +21,6 @@ namespace ejercicio_1
                 Console.WriteLine($"El espacio {Id} ya está ocupado.");
                 return;
             }
-
 
             ticketActual = new Ticket
             {
@@ -36,21 +34,20 @@ namespace ejercicio_1
             Console.WriteLine($"Vehículo {placaVehiculo} ocupó el espacio {Id} a las {horaEntrada}");
         }
 
-
         public override decimal Liberar(DateTime horaSalida)
         {
             if (!EstaOcupado)
             {
                 Console.WriteLine($"El espacio {Id} ya está libre.");
+
                 return 0;
             }
 
             ticketActual.HoraSalida = horaSalida;
 
-
             TimeSpan duracion = ticketActual.HoraSalida - ticketActual.HoraEntrada;
 
-            decimal total = ticketActual.CalcularCobro(duracion, TarifaHora, esElectrico: false);
+            decimal total = ticketActual.CalcularCobro(duracion, TarifaHora, false); // esElectrico: false por defecto
 
             EstaOcupado = false;
 

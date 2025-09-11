@@ -10,7 +10,7 @@ namespace ejercicio_1
         public decimal TarifaHora { get; protected set; }
         public bool EstaOcupado { get; protected set; }
 
-        // Métodos abstractos
+        // MÃ©todos abstractos
         public abstract void Ocupar(string placaVehiculo, DateTime horaEntrada);
         public abstract decimal Liberar(DateTime horaSalida);
         public abstract void MostrarInformacion();

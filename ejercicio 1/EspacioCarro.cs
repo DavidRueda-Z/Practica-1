@@ -1,4 +1,4 @@
-using System;
+Ã¯Â»Â¿using System;
 
 namespace ejercicio_1
 {
@@ -18,7 +18,7 @@ namespace ejercicio_1
         {
             if (EstaOcupado)
             {
-                Console.WriteLine($"El espacio {Id} ya está ocupado.");
+                Console.WriteLine($"El espacio {Id} ya estÃ¡ ocupado.");
                 return;
             }
 
@@ -31,14 +31,15 @@ namespace ejercicio_1
 
             EstaOcupado = true;
 
-            Console.WriteLine($"Vehículo {placaVehiculo} ocupó el espacio {Id} a las {horaEntrada}");
+            Console.WriteLine($"VehÃ­culo {placaVehiculo} ocupÃ³ el espacio {Id} a las {horaEntrada}");
         }
 
         public override decimal Liberar(DateTime horaSalida)
         {
             if (!EstaOcupado)
             {
-                Console.WriteLine($"El espacio {Id} ya está libre.");
+                Console.WriteLine($"El espacio {Id} ya estÃ¡ libre.");
+
                 return 0;
             }
 
@@ -50,7 +51,7 @@ namespace ejercicio_1
 
             EstaOcupado = false;
 
-            Console.WriteLine($"Vehículo {ticketActual.Placa} liberó el espacio {Id} a las {horaSalida}. Total a pagar: {total:C}");
+            Console.WriteLine($"VehÃ­culo {ticketActual.Placa} liberÃ³ el espacio {Id} a las {horaSalida}. Total a pagar: {total:C}");
 
             return total;
         }

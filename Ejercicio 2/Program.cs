@@ -1,9 +1,11 @@
-﻿using System;
-using SistemaParqueadero;
+﻿//using SistemaParqueadero;
 using RedMeteorologica;
+using System;
+using System.Text.RegularExpressions;
 
 class Program
 {
+    static RedMeteorologica.RedMeteorologica red = new RedMeteorologica.RedMeteorologica();
     static void Main(string[] args)
     {
         MostrarMenuPrincipal();
@@ -93,19 +95,97 @@ class Program
             switch (opcion)
             {
                 case 1:
-                    // TODO: Agregar estación
+                    red.AgregarEstacion();
+                    Console.WriteLine("✅ Estación agregada correctamente.");
                     break;
                 case 2:
-                    // TODO: Registrar lectura
+                    Console.Write("Ingrese el código de la estación: ");
+                    string codigo = Console.ReadLine();
+
+                    // Buscar estación en la red
+                    var estacion = red.ObtenerEstaciones()
+                                      .FirstOrDefault(e => e.Codigo == codigo);
+
+                    if (estacion == null)
+                    {
+                        Console.WriteLine("Estación no encontrada.");
+                        break;
+                    }
+
+                    // Pedir datos de la lectura
+                    Lectura nueva = new Lectura();
+
+                    Console.Write("Temperatura (°C): ");
+                    nueva.Temperatura = double.Parse(Console.ReadLine());
+
+                    Console.Write("Humedad (%): ");
+                    nueva.Humedad = double.Parse(Console.ReadLine());
+
+                    Console.Write("Velocidad del viento (m/s): ");
+                    nueva.VelViento = double.Parse(Console.ReadLine());
+
+                    Console.Write("Lluvia (mm): ");
+                    nueva.Lluvia = double.Parse(Console.ReadLine());
+
+                    Console.Write("Presión (hPa): ");
+                    nueva.Presion = double.Parse(Console.ReadLine());
+
+                    nueva.Fecha = DateTime.Now;
+
+                    // Registrar lectura
+                    estacion.RegistrarLectura(nueva);
+                    Console.WriteLine("Lectura registrada correctamente.");
+
                     break;
                 case 3:
-                    // TODO: Ver resumen por estación
+                    String codresumen;
+                    bool valido = false;
+                    do
+                    {
+                        Console.Write("Código de la estación: ");
+                        codresumen = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace(codresumen) || codresumen.Length < 3 || codresumen.Length > 10)
+                        {
+                            Console.WriteLine($"Código inválido (' {codresumen}'). Debe tener entre 3 y 10 caracteres alfanumericos.");
+                        }
+                        else if (!Regex.IsMatch(codresumen, @"^[a-zA-Z0-9]+$"))
+                        {
+                            Console.WriteLine($"Código inválido (' {codresumen}'). Solo letras y numeros son permitidos.");
+                        }
+                        else if (string.IsNullOrEmpty(codresumen))
+                        {
+                            Console.WriteLine("El código no puede estar vacío.");
+                        }
+                        else
+                        {
+                            valido = true;
+                        }
+                    }
+                    while (!valido);
+
+                    var estacionResumen = red.ObtenerEstaciones()
+                                             .FirstOrDefault(e => e.Codigo == codresumen);
+
+                    if (estacionResumen == null)
+                    {
+                        Console.WriteLine("Estación no encontrada.");
+                        break;
+                    }
+
+                    estacionResumen.CalcularResumen();
+                    break;
                     break;
                 case 4:
-                    // TODO: Resumen global
+                    red.ResumenGlobal();
                     break;
                 case 5:
-                    // TODO: Listar estaciones
+                    var estaciones = red.ObtenerEstaciones();
+                    Console.WriteLine("\nLista de Estaciones");
+                    foreach (var est in estaciones)
+                    {
+                        est.MostrarInformacion();
+                    }
+                    
                     break;
                 case 6:
                     volver = true;
@@ -130,3 +210,4 @@ class Program
         return opcion;
     }
 }
+

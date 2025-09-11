@@ -1,6 +1,7 @@
-﻿using System;
-using SistemaParqueadero;
+﻿//using SistemaParqueadero;
 using RedMeteorologica;
+using System;
+using System.Text.RegularExpressions; 
 
 class Program
 {
@@ -94,20 +95,7 @@ class Program
             switch (opcion)
             {
                 case 1:
-                    Console.Write("Ingrese el código de la estación: ");
-                    string cod = Console.ReadLine();
-                    Console.Write("Ingrese la ubicación: ");
-                    string ubicacion = Console.ReadLine();
-                    Console.Write("Tipo (1=Urbana, 2=Rural): ");
-                    int tipo = int.Parse(Console.ReadLine());
-
-                    Estacion nuevaEstacion;
-                    if (tipo == 1)
-                        nuevaEstacion = new EstacionUrbana { Codigo = cod, Ubicacion = ubicacion, Activo = true };
-                    else
-                        nuevaEstacion = new EstacionRural { Codigo = cod, Ubicacion = ubicacion, Activo = true };
-
-                    red.AgregarEstacion(nuevaEstacion);
+                    red.AgregarEstacion();
                     Console.WriteLine("✅ Estación agregada correctamente.");
                     break;
                 case 2:
@@ -150,11 +138,33 @@ class Program
 
                     break;
                 case 3:
-                    Console.Write("Ingrese el código de la estación: ");
-                    string codResumen = Console.ReadLine();
+                    String codresumen;
+                    bool valido = false;
+                    do
+                    {
+                        Console.Write("Código de la estación: ");
+                        codresumen = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace(codresumen) || codresumen.Length < 3 || codresumen.Length > 10)
+                        {
+                            Console.WriteLine($"Código inválido (' {codresumen}'). Debe tener entre 3 y 10 caracteres alfanumericos.");
+                        }
+                        else if (!Regex.IsMatch(codresumen, @"^[a-zA-Z0-9]+$"))
+                        {
+                            Console.WriteLine($"Código inválido (' {codresumen}'). Solo letras y numeros son permitidos.");
+                        }
+                        else if (string.IsNullOrEmpty(codresumen))
+                        {
+                            Console.WriteLine("El código no puede estar vacío.");
+                        }
+                        else
+                        {
+                            valido = true;
+                        }
+                    }
+                    while (!valido);
 
                     var estacionResumen = red.ObtenerEstaciones()
-                                             .FirstOrDefault(e => e.Codigo == codResumen);
+                                             .FirstOrDefault(e => e.Codigo == codresumen);
 
                     if (estacionResumen == null)
                     {
@@ -170,17 +180,12 @@ class Program
                     break;
                 case 5:
                     var estaciones = red.ObtenerEstaciones();
-                    if (estaciones.Count == 0)
+                    Console.WriteLine("\nLista de Estaciones");
+                    foreach (var est in estaciones)
                     {
-                        Console.WriteLine("No hay estaciones registradas.");
+                        est.MostrarInformacion();
                     }
-                    else
-                    {
-                        foreach (var est in estaciones)
-                        {
-                            est.MostrarInformacion();
-                        }
-                    }
+                    
                     break;
                 case 6:
                     volver = true;

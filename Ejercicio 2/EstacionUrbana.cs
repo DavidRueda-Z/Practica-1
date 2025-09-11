@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions; 
 
 namespace RedMeteorologica
 {
@@ -8,8 +9,36 @@ namespace RedMeteorologica
     {
         private List<Lectura> lecturas = new List<Lectura>();
 
+        private bool ValidarMetadata()
+        {
+            if (string.IsNullOrWhiteSpace(Codigo) || Codigo.Length < 3 || Codigo.Length > 10)
+            {
+                Auditar("Error", $"Código inválido (' {Codigo}'). Debe tener entre 3 y 10 caracteres alfanumericos.");
+                return false;
+            }
+            if (!Regex.IsMatch(Codigo, @"^[a-zA-Z0-9]+$"))
+            {
+                Auditar("Error", $"Código inválido (' {Codigo}'). Solo letras y numeros son permitidos.");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(Ubicacion) || Ubicacion.Length < 5 || Ubicacion.Length > 50)
+            {
+                Auditar("Error", $"Ubicación inválida (' {Ubicacion}'). Debe tener entre 5 y 50 caracteres.");
+                return false;
+            }
+            if (!Regex.IsMatch(Ubicacion, @"^[a-zA-Z0-9\s\.,\-]+$"))
+            {
+                Auditar("Error", $"Ubicación inválida (' {Ubicacion}'). Solo letras, números, espacios y , . - son permitidos.");
+                return false;
+            }
+            return true;
+        }
         public override void RegistrarLectura(Lectura nuevaLectura)
         {
+            if (!ValidarMetadata())
+            {
+                return;
+            }
             if (nuevaLectura.Temperatura < -50 || nuevaLectura.Temperatura > 60 ||
                 nuevaLectura.Humedad < 0 || nuevaLectura.Humedad > 100)
             {
@@ -27,7 +56,7 @@ namespace RedMeteorologica
         {
             if (lecturas.Count == 0)
             {
-                Auditar("Error, no hay lecturas para calcular resumen");
+                Auditar("Error", "no hay lecturas para calcular resumen");
                 return;
             }
 

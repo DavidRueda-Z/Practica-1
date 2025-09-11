@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions; 
 
 namespace RedMeteorologica
 {
@@ -40,7 +41,15 @@ namespace RedMeteorologica
             {
                 Console.Write("Código de la estación: ");
                 codigo = Console.ReadLine();
-                if (string.IsNullOrEmpty(codigo))
+                if (string.IsNullOrWhiteSpace(codigo) || codigo.Length < 3 || codigo.Length > 10)
+                {
+                    Console.WriteLine($"Código inválido (' {codigo}'). Debe tener entre 3 y 10 caracteres alfanumericos.");
+                }
+                else if (!Regex.IsMatch(codigo, @"^[a-zA-Z0-9]+$"))
+                {
+                    Console.WriteLine($"Código inválido (' {codigo}'). Solo letras y numeros son permitidos.");
+                }
+                else if (string.IsNullOrEmpty(codigo))
                 {
                     Console.WriteLine("El código no puede estar vacío.");
                 }
@@ -63,6 +72,14 @@ namespace RedMeteorologica
                 if (string.IsNullOrEmpty(ubicacion))
                 {
                     Console.WriteLine("La ubicación no puede estar vacía.");
+                }
+                else if (string.IsNullOrWhiteSpace(ubicacion) || ubicacion.Length < 5 || ubicacion.Length > 50)
+                {
+                    Console.WriteLine($"Ubicación inválida (' {ubicacion}'). Debe tener entre 5 y 50 caracteres.");
+                }
+                else if (!Regex.IsMatch(ubicacion, @"^[a-zA-Z0-9\s\.,\-]+$"))
+                {
+                    Console.WriteLine($"Ubicación inválida (' {ubicacion}'). Solo letras, números, espacios y , . - son permitidos.");
                 }
                 else
                 {
@@ -100,15 +117,6 @@ namespace RedMeteorologica
             if (estaciones.Count == 0)
             {
                 Console.WriteLine("No hay estaciones registradas.");
-            }
-
-            Console.WriteLine("\nLista de Estaciones");
-
-            int cont = 0;
-            foreach (var estacion in estaciones)
-            {
-                cont++;
-                Console.WriteLine("Estacion #" + cont + "\nCodigo: " + estacion.Codigo + "\nUbicacion: " + estacion.Ubicacion + "\n");
             }
 
             return estaciones.AsReadOnly();

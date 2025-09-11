@@ -1,73 +1,163 @@
 using System;
+using System.Linq;
 
 namespace ejercicio_1
 {
-	class Program
-	{
-		static void Main(string[] args)
-		{
-			bool salir = false;
+    class Program
+    {
+        static Parqueadero parqueadero = new Parqueadero();
 
-			while (!salir)
-			{
-				Console.Clear();
-				Console.WriteLine("==== SISTEMA DE PARQUEADEROS ====");
-				Console.WriteLine("1. Registrar entrada de vehículo");
-				Console.WriteLine("2. Registrar salida y cobro");
-				Console.WriteLine("3. Consultar disponibilidad por tipo");
-				Console.WriteLine("4. Mostrar información de todos los espacios");
-				Console.WriteLine("5. Mostrar ingresos totales del día");
-				Console.Write("\nSeleccione una opción: ");
+        static void Main(string[] args)
+        {
+            bool salir = false;
 
-				string opcion = Console.ReadLine();
+            while (!salir)
+            {
+                Console.Clear();
+                Console.WriteLine("==== SISTEMA DE PARQUEADEROS ====");
+                Console.WriteLine("1. Registrar entrada de vehículo");
+                Console.WriteLine("2. Registrar salida y cobro");
+                Console.WriteLine("3. Consultar disponibilidad por tipo");
+                Console.WriteLine("4. Mostrar información de todos los espacios");
+                Console.WriteLine("5. Mostrar ingresos totales del día");
+                Console.WriteLine("6. Salir");
+                Console.Write("\nSeleccione una opción: ");
 
-				switch (opcion)
-				{
-					case "1":
-						RegistrarEntradaVehiculo();
-						break;
-					case "2":
-						RegistrarSalidaYCobro();
-						break;
-					case "3":
-						ConsultarDisponibilidadPorTipo();
-						break;
-					case "4":
-						MostrarInformacionEspacios();
-						break;
-					case "5":
-						MostrarIngresosTotales();
-						break;
-					default:
-						Console.WriteLine("Opción no válida, intente de nuevo.");
-						break;
-				}
-			}
-		}
+                string opcion = Console.ReadLine();
 
-		static void RegistrarEntradaVehiculo()
-		{
-			Console.WriteLine("[Registrar Entrada] Aquí se pedirán datos del vehículo y se ocupará un espacio.");
-		}
+                switch (opcion)
+                {
+                    case "1":
+                        RegistrarEntradaVehiculo();
+                        break;
+                    case "2":
+                        RegistrarSalidaYCobro();
+                        break;
+                    case "3":
+                        ConsultarDisponibilidadPorTipo();
+                        break;
+                    case "4":
+                        MostrarInformacionEspacios();
+                        break;
+                    case "5":
+                        MostrarIngresosTotales();
+                        break;
+                    case "6":
+                        salir = true;
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida, intente de nuevo.");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
 
-		static void RegistrarSalidaYCobro()
-		{
-			Console.WriteLine("[Registrar Salida] Aquí se liberará un espacio, se generará ticket y se procesará el pago.");
-		}
+        static void RegistrarEntradaVehiculo()
+        {
+            Console.Clear();
+            Console.WriteLine("=== Registrar Entrada ===");
 
-		static void ConsultarDisponibilidadPorTipo()
-		{
-			Console.WriteLine("[Disponibilidad] Aquí se mostrará cuántos espacios hay disponibles por tipo.");
-		}
+            Console.Write("Ingrese la placa: ");
+            string placa = Console.ReadLine();
 
-		static void MostrarInformacionEspacios()
-		{
-			Console.WriteLine("[Información Espacios] Aquí se listará cada espacio con su estado.");
-		}
+            Console.WriteLine("Seleccione el tipo de espacio:");
+            Console.WriteLine("1. Carro");
+            Console.WriteLine("2. Moto");
+            Console.WriteLine("3. Discapacitado");
+            Console.WriteLine("4. Eléctrico");
+            string opcionTipo = Console.ReadLine();
 
-		static void MostrarIngresosTotales()
-		{
-			Console.WriteLine("[Ingresos] Aquí se mostrará la suma de todos los ingresos del día.");
-		}
-	}
+            TipoEspacio tipo = opcionTipo switch
+            {
+                "1" => TipoEspacio.Carro,
+                "2" => TipoEspacio.Moto,
+                "3" => TipoEspacio.Discapacitado,
+                "4" => TipoEspacio.Electrico,
+                _ => TipoEspacio.Carro
+            };
+
+            var disponible = parqueadero.DisponiblesPorTipo(tipo).FirstOrDefault();
+
+            if (disponible != null)
+            {
+                disponible.Ocupar(placa, DateTime.Now);
+                parqueadero.Auditar("Entrada", $"Vehículo {placa} entró a espacio {disponible.Id}");
+                Console.WriteLine($"Vehículo {placa} registrado en espacio {disponible.Id}");
+            }
+            else
+            {
+                Console.WriteLine("No hay espacios disponibles para este tipo.");
+            }
+
+            Console.ReadKey();
+        }
+
+        static void RegistrarSalidaYCobro()
+        {
+            Console.Clear();
+            Console.WriteLine("=== Registrar Salida ===");
+
+            Console.Write("Ingrese la placa: ");
+            string placa = Console.ReadLine();
+
+            var espacio = parqueadero.Espacios.FirstOrDefault(e => e.EstaOcupado && e.PlacaVehiculo == placa);
+
+            if (espacio != null)
+            {
+                DateTime horaSalida = DateTime.Now;
+                Ticket ticket = espacio.Liberar(horaSalida);
+                parqueadero.Tickets.Add(ticket);
+
+                Console.WriteLine($"Duración: {ticket.HoraSalida - ticket.HoraEntrada}");
+                Console.WriteLine($"Valor a pagar: {ticket.ValorCobrado:C}");
+
+                Console.Write("Ingrese medio de pago: ");
+                string medio = Console.ReadLine();
+                parqueadero.ProcesarPago(ticket.ValorCobrado, medio);
+                parqueadero.Auditar("Salida", $"Vehículo {placa} salió del espacio {espacio.Id}");
+            }
+            else
+            {
+                Console.WriteLine("No se encontró vehículo con esa placa.");
+            }
+
+            Console.ReadKey();
+        }
+
+        static void ConsultarDisponibilidadPorTipo()
+        {
+            Console.Clear();
+            Console.WriteLine("=== Disponibilidad por Tipo ===");
+
+            foreach (TipoEspacio tipo in Enum.GetValues(typeof(TipoEspacio)))
+            {
+                int cantidad = parqueadero.DisponiblesPorTipo(tipo).Count;
+                Console.WriteLine($"{tipo}: {cantidad} espacios disponibles");
+            }
+
+            Console.ReadKey();
+        }
+
+        static void MostrarInformacionEspacios()
+        {
+            Console.Clear();
+            Console.WriteLine("=== Información de Espacios ===");
+
+            foreach (var espacio in parqueadero.Espacios)
+            {
+                espacio.MostrarInformacion();
+            }
+
+            Console.ReadKey();
+        }
+
+        static void MostrarIngresosTotales()
+        {
+            Console.Clear();
+            Console.WriteLine("=== Ingresos Totales ===");
+            Console.WriteLine($"Ingresos acumulados: {parqueadero.IngresosTotales():C}");
+            Console.ReadKey();
+        }
+    }
 }

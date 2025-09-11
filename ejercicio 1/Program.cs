@@ -38,7 +38,10 @@ namespace ejercicio_1
 					case "5":
 						MostrarIngresosTotales();
 						break;
-					default:
+					case "6":
+						salir = true;
+						break;
+                    default:
 						Console.WriteLine("Opción no válida, intente de nuevo.");
 						break;
 				}
@@ -47,7 +50,9 @@ namespace ejercicio_1
 
 		static void RegistrarEntradaVehiculo()
 		{
-			Console.WriteLine("[Registrar Entrada] Aquí se pedirán datos del vehículo y se ocupará un espacio.");
+			Console.Clear();
+            Console.WriteLine("[Registrar Entrada] Ingrese la placa del vehiculo:.");
+			string
 		}
 
 		static void RegistrarSalidaYCobro()

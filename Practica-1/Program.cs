@@ -299,18 +299,22 @@ class Program
             if (string.IsNullOrEmpty(placa))
             {
                 Console.WriteLine("La placa no puede estar vacía.");
+                RegistrarSalidaYCobro();
             }
             else if (!Regex.IsMatch(placa, @"^[a-zA-Z0-9]+$"))
             {
                 Console.WriteLine($"Placa invalida: (' {placa}'). Solo letras y numeros son permitidos.");
+                RegistrarSalidaYCobro();
             }
             else if (placa.Length != 6)
             {
                 Console.WriteLine($"Placa invalida: (' {placa}'). Debe tener entre 6 caracteres alfanumericos");
+                RegistrarSalidaYCobro();
             }
             else if (parqueadero.Espacios.FirstOrDefault(e => e.PlacaVehiculo == placa) == null)
             {
                 Console.WriteLine("No esta registrada esa placa en el sistema.");
+                RegistrarSalidaYCobro();
             }
             else
             {

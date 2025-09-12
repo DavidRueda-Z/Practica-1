@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ejercicio_1
 {
@@ -58,8 +59,34 @@ namespace ejercicio_1
             Console.Clear();
             Console.WriteLine("=== Registrar Entrada ===");
 
-            Console.Write("Ingrese la placa: ");
-            string placa = Console.ReadLine();
+            string placa;
+            bool valido = false;
+            do
+            {
+                Console.Write("Ingrese la placa: ");
+                placa = Console.ReadLine();
+                if (string.IsNullOrEmpty(placa))
+                {
+                    Console.WriteLine("La placa no puede estar vacía.");
+                }
+                else if (!Regex.IsMatch(placa, @"^[a-zA-Z0-9]+$"))
+                {
+                    Console.WriteLine($"Placa invalida: (' {placa}'). Solo letras y numeros son permitidos.");
+                }
+                else if (placa.Length != 6)
+                {
+                    Console.WriteLine($"Placa invalida: (' {placa}'). Debe tener entre 6 caracteres alfanumericos");
+                }
+                else if (parqueadero.Espacios.FirstOrDefault(e => e.PlacaVehiculo == placa) != null)
+                {
+                    Console.WriteLine("Ya existe una estación con ese código.");
+                }
+                else
+                {
+                    valido = true;
+                }
+            }
+            while (!valido);
 
             Console.WriteLine("Seleccione el tipo de espacio:");
             Console.WriteLine("1. Carro");
@@ -97,9 +124,34 @@ namespace ejercicio_1
         {
             Console.Clear();
             Console.WriteLine("=== Registrar Salida ===");
-
-            Console.Write("Ingrese la placa: ");
-            string placa = Console.ReadLine();
+            String placa;
+            bool valido = false;
+            do
+            {
+                Console.Write("Ingrese la placa: ");
+                placa = Console.ReadLine();
+                if (string.IsNullOrEmpty(placa))
+                {
+                    Console.WriteLine("La placa no puede estar vacía.");
+                }
+                else if (!Regex.IsMatch(placa, @"^[a-zA-Z0-9]+$"))
+                {
+                    Console.WriteLine($"Placa invalida: (' {placa}'). Solo letras y numeros son permitidos.");
+                }
+                else if (placa.Length != 6)
+                {
+                    Console.WriteLine($"Placa invalida: (' {placa}'). Debe tener entre 6 caracteres alfanumericos");
+                }
+                else if (parqueadero.Espacios.FirstOrDefault(e => e.PlacaVehiculo == placa) != null)
+                {
+                    Console.WriteLine("Ya existe una estación con ese código.");
+                }
+                else
+                {
+                    valido = true;
+                }
+            }
+            while (!valido);
 
             var espacio = parqueadero.Espacios.FirstOrDefault(e => e.EstaOcupado && e.PlacaVehiculo == placa);
 

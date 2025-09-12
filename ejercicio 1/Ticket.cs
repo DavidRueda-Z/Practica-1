@@ -12,18 +12,15 @@ namespace ejercicio_1
 
         public decimal CalcularCobro(TimeSpan duracion, decimal tarifaHora, bool esElectrico)
         {
-
             int horas = (int)Math.Ceiling(duracion.TotalHours);
-
             decimal total = horas * tarifaHora;
 
             if (esElectrico)
             {
-                total *= 0.8m; 
+                total *= 0.8m;
             }
 
             ValorCobrado = total;
-
             return total;
         }
 

@@ -107,15 +107,20 @@ namespace ejercicio_1
             {
                 DateTime horaSalida = DateTime.Now;
                 Ticket ticket = espacio.Liberar(horaSalida);
-                parqueadero.Tickets.Add(ticket);
 
-                Console.WriteLine($"Duración: {ticket.HoraSalida - ticket.HoraEntrada}");
-                Console.WriteLine($"Valor a pagar: {ticket.ValorCobrado:C}");
+                if (ticket != null)
+                {
+                    parqueadero.Tickets.Add(ticket);
 
-                Console.Write("Ingrese medio de pago: ");
-                string medio = Console.ReadLine();
-                parqueadero.ProcesarPago(ticket.ValorCobrado, medio);
-                parqueadero.Auditar("Salida", $"Vehículo {placa} salió del espacio {espacio.Id}");
+                    TimeSpan duracion = ticket.HoraSalida - ticket.HoraEntrada;
+                    Console.WriteLine($"Duración: {duracion.Hours}h {duracion.Minutes}m");
+                    Console.WriteLine($"Valor a pagar: {ticket.ValorCobrado:C}");
+
+                    Console.Write("Ingrese medio de pago: ");
+                    string medio = Console.ReadLine();
+                    parqueadero.ProcesarPago(ticket.ValorCobrado, medio);
+                    parqueadero.Auditar("Salida", $"Vehículo {placa} salió del espacio {espacio.Id}");
+                }
             }
             else
             {
